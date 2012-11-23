@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<task>
+    <inputFile name="input.xml"/>
+    <outputFile name="output_test.xml"/>
+</task>
