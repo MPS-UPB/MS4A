@@ -1,0 +1,56 @@
+<hierarchy>
+ <hierarchy_docs>
+  <Document image="first.jpg" direction="ascending" id="img1"/>
+  <Document image="second.tf" direction="ascending" id="img2"/>
+ </hierarchy_docs>
+ 
+ <hierarchy_blocks>
+  <ComposedBlock type="article">
+    <ImageBlock left="1" right="11" top="1" bottom="1" refid="img1">
+     <Polygon>
+      <Point x="1" y="1"/>
+      <Point x="1" y="1"/>
+      <Point x="1" y="1"/>
+     </Polygon>
+    </ImageBlock>
+    
+    <ComposedBlock  type="title">
+     <TextBlock refid="img1" left="1" right="11" top="1" bottom="1">
+      <TextLine left="1" right="11" top="1" bottom="1">
+       <String>Title</String>
+       <String>Example</String>
+      </TextLine>
+     </TextBlock>
+    </ComposedBlock>
+    
+    <ComposedBlock  type="body">
+     <TextBlock refid="img1" left="1" right="11" top="1" bottom="1">
+      <TextLine left="1" right="11" top="1" bottom="1">
+       <String>One</String>
+       <String>Two</String>
+      </TextLine>
+      
+      <TextLine left="1" right="11" top="1" bottom="1">
+       <String>aaa bbbbb cccccc</String>
+       <String>d</String>
+       <String>eee</String>
+      </TextLine>
+     </TextBlock>
+  
+     <TextBlock refid="img2" left="1" right="11" top="1" bottom="1">
+      <TextLine left="1" right="11" top="1" bottom="1">
+       <String>First</String>
+      </TextLine>
+      
+      <TextLine left="1" right="11" top="1" bottom="1">
+       <String>Second</String>
+      </TextLine>
+      
+      <TextLine left="1" right="11" top="1" bottom="1">
+       <String>Thied</String>
+      </TextLine>
+     </TextBlock>
+    </ComposedBlock>
+   </ComposedBlock>
+ </hierarchy_blocks>
+</hierarchy>
