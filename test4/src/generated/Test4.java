@@ -29,6 +29,87 @@ public class Test4 {
     /**
      * @param args the command line arguments
      */
+    
+    public static void movePointUp(ArrayList<PointType> lista, int index) {
+        if (index >0) {
+           BigInteger tempx=lista.get(index-1).getX();
+           BigInteger tempy=lista.get(index-1).getY();
+           PointType punct_auxiliar= new PointType();
+           punct_auxiliar.setX(tempx);
+           punct_auxiliar.setY(tempy);
+           lista.set(index-1,lista.get(index));
+           lista.set(index,punct_auxiliar);
+        }
+        
+    }
+    
+    public static void movePointDown(ArrayList<PointType> lista, int index) {
+        if (index < lista.size() - 1) {
+           BigInteger tempx=lista.get(index+1).getX();
+           BigInteger tempy=lista.get(index+1).getY();
+           PointType punct_auxiliar= new PointType();
+           punct_auxiliar.setX(tempx);
+           punct_auxiliar.setY(tempy);
+           lista.set(index+1,lista.get(index));
+           lista.set(index,punct_auxiliar);
+        }
+        
+    }
+    
+    public static void moveStringUp(ArrayList<String> lista, int index) {
+        if (index>0) {
+            String text_aux = lista.get(index-1);
+            lista.set(index-1,lista.get(index));
+            lista.set(index,text_aux);
+            
+        }
+    }
+    
+    public static void moveStringDown(ArrayList<String> lista, int index) {
+        if (index<lista.size() -1 ) {
+            String text_aux = lista.get(index+1);
+            lista.set(index+1,lista.get(index));
+            lista.set(index,text_aux);
+            
+        }
+    }
+    
+    public static void moveTextLineUp(ArrayList<TextBlockType.TextLine> lista, int index) {
+        if (index>0) {
+            TextBlockType.TextLine text_line_aux = lista.get(index-1);
+            lista.set(index-1,lista.get(index));
+            lista.set(index,text_line_aux);
+        }
+    }
+    
+     public static void moveTextLineDown(ArrayList<TextBlockType.TextLine> lista, int index) {
+        if (index<lista.size() -1 ) {
+            TextBlockType.TextLine text_line_aux = lista.get(index+1);
+            lista.set(index+1,lista.get(index));
+            lista.set(index,text_line_aux);
+        }
+    }
+     
+     public static void moveTextBlockUp(ArrayList<BlockType> lista, int index) {
+        if (index>0) {
+            BlockType text_bloc_aux = lista.get(index-1);
+            lista.set(index-1,lista.get(index));
+            lista.set(index,text_bloc_aux);
+        }
+    }
+     
+     public static void moveTextBlockDown(ArrayList<BlockType> lista, int index) {
+        if (index<lista.size() -1 ) {
+            BlockType text_bloc_aux = lista.get(index+1);
+            lista.set(index+1,lista.get(index));
+            lista.set(index,text_bloc_aux);
+        }
+    }
+   
+     public static void deleteNode(ArrayList lista, Object o) {
+           lista.remove(o);  
+    }
+     
     public static void main(String[] args) {
                  try {
             JAXBContext jc = JAXBContext.newInstance ("generated");
@@ -68,13 +149,53 @@ public class Test4 {
            */
            
            HierarchyType nodstart = (HierarchyType) element.getValue();
-           ComposedBlockType imagine = (ComposedBlockType) nodstart.getHierarchyBlocks().getTextBlockOrImageBlockOrComposedBlock().get(0);
-           ImageBlockType blocimage= (ImageBlockType) imagine.getTextBlockOrImageBlockOrComposedBlock().get(0);
            
-           System.out.println (imagine.getType());
-           System.out.println (blocimage.getTop());
-           System.out.println (blocimage.getRight());
-           System.out.println (blocimage.getBottom());
+           //System.out.println(nodstart);
+           
+           /*ComposedBlockType imagine = (ComposedBlockType) nodstart.getHierarchyBlocks().getTextBlockOrImageBlockOrComposedBlock().get(0);
+           ImageBlockType blocimage= (ImageBlockType) imagine.getTextBlockOrImageBlockOrComposedBlock().get(0);
+           PolygonType poli=(PolygonType) blocimage.getPolygon();
+           ArrayList<PointType> list=new ArrayList<PointType>() ;
+           list=(ArrayList<PointType>) poli.getPoint();
+           
+           BigInteger tempx=list.get(0).getX();
+           BigInteger tempy=list.get(0).getY();
+           PointType punct_auxiliar= new PointType();
+           punct_auxiliar.setX(tempx);
+           punct_auxiliar.setY(tempy);
+           list.set(0,list.get(1));
+           list.set(1,punct_auxiliar);
+         
+           movePointDown(list,1);
+         
+           //System.out.println (imagine.getType());
+           for (int i=0; i<list.size(); i++) {
+               System.out.println(list.get(i).getX());
+               System.out.println(list.get(i).getY());
+           }
+          
+           //System.out.println (blocimage.getRight());
+           //System.out.println (blocimage.getBottom());*/
+           ComposedBlockType imagine = (ComposedBlockType) nodstart.getHierarchyBlocks().getTextBlockOrImageBlockOrComposedBlock().get(0);
+           ComposedBlockType bloc= (ComposedBlockType) imagine.getTextBlockOrImageBlockOrComposedBlock().get(2);
+           ArrayList<BlockType> l1=(ArrayList<BlockType>) bloc.getTextBlockOrImageBlockOrComposedBlock();
+          // moveTextBlockDown(l1,0);
+           
+           ImageBlockType textblock1= (ImageBlockType) bloc.getTextBlockOrImageBlockOrComposedBlock().get(0);
+           ImageBlockType textblock2= (ImageBlockType) bloc.getTextBlockOrImageBlockOrComposedBlock().get(1);
+           deleteNode(l1,textblock2);
+            BigInteger refid1=textblock1.left;
+           TextBlockType text= (TextBlockType) l1.get(1);
+           
+           System.out.println(refid1);
+           System.out.println(text.refid);
+           //ArrayList<TextBlockType.TextLine> l1=(ArrayList<TextBlockType.TextLine>) textblock.textLine;
+          // ArrayList<String> lista_stringuri =new ArrayList<String>() ;
+           //lista_stringuri= (ArrayList<String>) textblock.textLine.get(0).string;
+          
+  //         for (int i=0; i<bloc.getTextBlockOrImageBlockOrComposedBlock().size(); i++) 
+            //   System.out.println(.get(i).string.get(0));
+           
            
        } catch (JAXBException e) {
            e.printStackTrace ();

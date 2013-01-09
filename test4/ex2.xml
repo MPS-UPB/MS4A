@@ -8,22 +8,48 @@
   <ComposedBlock type="article">
     <ImageBlock left="1" right="11" top="1" bottom="1" refid="img1">
      <Polygon>
-      <Point x="1" y="1"/>
-      <Point x="1" y="1"/>
-      <Point x="1" y="1"/>
+      <Point x="7" y="8"/>
+      <Point x="3" y="6"/>
+      <Point x="0" y="0"/>
      </Polygon>
+	
     </ImageBlock>
     
     <ComposedBlock  type="title">
+
+
      <TextBlock refid="img1" left="1" right="11" top="1" bottom="1">
       <TextLine left="1" right="11" top="1" bottom="1">
        <String>Title</String>
        <String>Example</String>
+	  <String>AnotherString</String>
+       <String>aaa</String>
+       <String>bbb</String>
+       <String>ccc</String>
+
       </TextLine>
      </TextBlock>
     </ComposedBlock>
     
     <ComposedBlock  type="body">
+ <ImageBlock left="1" right="11" top="1" bottom="1" refid="img1">
+     <Polygon>
+      <Point x="7" y="8"/>
+      <Point x="3" y="6"/>
+      <Point x="0" y="0"/>
+     </Polygon>
+	
+    </ImageBlock>
+<ImageBlock left="2" right="11" top="1" bottom="1" refid="img1">
+     <Polygon>
+      <Point x="7" y="8"/>
+      <Point x="3" y="6"/>
+      <Point x="0" y="0"/>
+     </Polygon>
+	
+    </ImageBlock>
+
+
      <TextBlock refid="img1" left="1" right="11" top="1" bottom="1">
       <TextLine left="1" right="11" top="1" bottom="1">
        <String>One</String>
