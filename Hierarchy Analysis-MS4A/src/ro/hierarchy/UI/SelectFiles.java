@@ -7,6 +7,7 @@ package ro.hierarchy.UI;
 import java.io.File;
 import java.util.Vector;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultTreeModel;
 
 /**
@@ -186,6 +187,7 @@ public class SelectFiles extends javax.swing.JFrame {
             
             JFileChooser chooser = new JFileChooser("");
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            chooser.setFileFilter(new FileNameExtensionFilter("XML files", "xml"));
             chooser.setMultiSelectionEnabled(true);
                       
             int returnVal = chooser.showOpenDialog((java.awt.Component) null);
@@ -193,11 +195,11 @@ public class SelectFiles extends javax.swing.JFrame {
             inFile = chooser.getSelectedFiles();
            
       //      chooser.addPropertyChangeListener(".xlm", JFileChooser.FILE_FILTER_CHANGED_PROPERTY );
-            
+            jTextArea1.setText("");
             for (int i=0; i<inFile.length;i++){
                 if(verifyExtension(inFile[i].getPath())){
                  //   fileName.setInputText(inFile[i].getPath());
-                  jTextArea1.setText( inFile[i].getPath()+ "\n");// + jTextArea1.getText());
+                  jTextArea1.setText(jTextArea1.getText()+inFile[i].getPath()+'\n');// + jTextArea1.getText());
                   input.add(inFile[i].getPath());
                 }
             }
@@ -220,11 +222,16 @@ public class SelectFiles extends javax.swing.JFrame {
          
          JFileChooser chooser = new JFileChooser("");
          chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+         chooser.setFileFilter(new FileNameExtensionFilter("XML files", "xml"));
          chooser.enableInputMethods(rootPaneCheckingEnabled);
                  
          int returnVal = chooser.showOpenDialog((java.awt.Component) null);
          if (returnVal == JFileChooser.APPROVE_OPTION ){
             outFile = chooser.getSelectedFile();
+            if(!outFile.getName().toLowerCase().endsWith(".xml")){
+               outputFile = outFile.getPath()+".xml";
+               jTextField2.setText(outputFile);
+            }
             if (verifyExtension(outFile.getPath())){
                 jTextField2.setText(outFile.getPath());
                 outputFile = outFile.getPath();

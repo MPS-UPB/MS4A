@@ -121,6 +121,8 @@ public class Test4 {
     }
      
      public static String getName(Object x){
+         
+         if(x==null) return "null Object";
          if(x.getClass().toString().equals("class generated.HierarchyType")){
              return "hierarchy";
          }
@@ -153,6 +155,9 @@ public class Test4 {
          }
          if(x.getClass().toString().equals("class generated.ComposedBlockType")){
              return "composedblock";
+         }
+         if(x.getClass().toString().equals("class generated.TextBlockType$TextLine")){
+             return "textline";
          }
          
          return "eroare: "+x.getClass().toString();
@@ -310,6 +315,20 @@ public class Test4 {
            v.add("id");
            v.add(doc.getId());
         }
+           if(name.equals("textline")){
+           
+           TextBlockType.TextLine doc = (TextBlockType.TextLine)node.getUserObject();
+           v.add("left");
+           v.add((doc.getLeft().toString()));
+           v.add("right");
+           v.add(doc.getRight().toString());
+           v.add("top");
+           v.add(doc.getTop().toString());
+           v.add("bottom");
+           v.add(doc.getBottom().toString());
+           v.add("text");
+           v.add(getString(node));
+        }
         
         
         return v;
@@ -334,6 +353,14 @@ public class Test4 {
              if (old.equals("top")) text.setTop(new BigInteger(nou));
              if (old.equals("bottom")) text.setBottom(new BigInteger(nou));
               if (old.equals("refid")) text.setRefid(nou);
+        }
+        if(name.equals("textline")){
+            TextBlockType.TextLine text= (TextBlockType.TextLine) node.getUserObject();
+             if (old.equals("left")) text.setLeft(new BigInteger(nou));
+             if (old.equals("right")) text.setRight(new BigInteger(nou));
+             if (old.equals("top")) text.setTop(new BigInteger(nou));
+             if (old.equals("bottom")) text.setBottom(new BigInteger(nou));
+             if (old.equals("text")) setString(node, nou);
         }
         if(name.equals("imageblock")){
             ImageBlockType text= (ImageBlockType) node.getUserObject();
@@ -385,6 +412,248 @@ public class Test4 {
         
     }
     
+    public static List<String> getChilds(DefaultMutableTreeNode node){
+        List <String> v = new ArrayList<String>();
+        //String clasa =node.getUserObject().getClass().toString();
+        if (getName(node.getUserObject())=="hierarchy"){
+        v.add("hierarchy_docs");
+        v.add("hierarchy_blocks");
+        }
+        if (getName(node.getUserObject())=="hierarchyblocks"){
+        v.add("textblock");
+        v.add("imageblock");
+        v.add("composedblock");
+        }
+        if (getName(node.getUserObject())=="hierarchydocs"){
+        v.add("document");
+        }
+        if (getName(node.getUserObject())=="composedblock"){
+        v.add("textblock");
+        v.add("imageblock");
+        v.add("composedblock");
+        }
+        if (getName(node.getUserObject())=="textblock"){
+        v.add("textline");
+        }
+        if (getName(node.getUserObject())=="imageblock"){
+        v.add("polygon");
+        }
+        //getName nu returneaza niciodata textline 
+        /*if (getName(node.getUserObject())=="textline"){
+        v.add("string");
+        }*/
+        if (getName(node.getUserObject())=="polygon"){
+        v.add("point");
+        }
+    return v;
+    }
+    
+    public static void insertChild (DefaultMutableTreeNode node, String child){
+        
+        if (getName(node.getUserObject())=="hierarchy"){
+        if (child.equals("hierarchydocs")){
+        HierarchyDocsType doc=new HierarchyDocsType();
+        ((HierarchyType) node.getUserObject()).setHierarchyDocs(doc);
+        }
+        if (child.equals("hierarchyblocks")){
+        HierarchyBlocksType doc=new HierarchyBlocksType();
+        ((HierarchyType) node.getUserObject()).setHierarchyBlocks(doc);
+        }
+        }
+        
+        if (getName(node.getUserObject())=="hierarchydocs"){
+        if (child.equals("document")){
+        DocumentType doc=new DocumentType();
+        doc.setDirection(DirType.ASCENDING);
+        ((HierarchyDocsType) node.getUserObject()).getDocument().add(doc);
+        }
+        }
+        if ((getName(node.getUserObject())=="hierarchyblocks")) {
+        if (child.equals("imageblock")){
+        ImageBlockType doc=new ImageBlockType();
+        doc.setBottom(BigInteger.ZERO);
+        doc.setLeft(BigInteger.ZERO);
+        doc.setRight(BigInteger.ZERO);
+        doc.setTop(BigInteger.ZERO);
+        doc.setRefid("0");
+        ((HierarchyBlocksType) node.getUserObject()).getTextBlockOrImageBlockOrComposedBlock().add(doc);
+        }
+        
+        if (child.equals("textblock")){
+        TextBlockType doc=new TextBlockType();
+        doc.setBottom(BigInteger.ZERO);
+        doc.setLeft(BigInteger.ZERO);
+        doc.setRight(BigInteger.ZERO);
+        doc.setTop(BigInteger.ZERO);
+        doc.setRefid("0");
+        ((HierarchyBlocksType) node.getUserObject()).getTextBlockOrImageBlockOrComposedBlock().add(doc);
+        }
+        
+        if (child.equals("composedblock")){
+        ComposedBlockType doc=new ComposedBlockType();
+        doc.setType(ImposedType.BODY);
+        ((HierarchyBlocksType) node.getUserObject()).getTextBlockOrImageBlockOrComposedBlock().add(doc);
+        }   
+        }
+        
+        if ((getName(node.getUserObject())=="composedblock")) {
+        if (child.equals("imageblock")){
+        ImageBlockType doc=new ImageBlockType();
+        doc.setBottom(BigInteger.ZERO);
+        doc.setLeft(BigInteger.ZERO);
+        doc.setRight(BigInteger.ZERO);
+        doc.setTop(BigInteger.ZERO);
+        doc.setRefid("0");
+        ((ComposedBlockType) node.getUserObject()).getTextBlockOrImageBlockOrComposedBlock().add(doc);
+        }
+        
+        if (child.equals("textblock")){
+        TextBlockType doc=new TextBlockType();
+        doc.setBottom(BigInteger.ZERO);
+        doc.setLeft(BigInteger.ZERO);
+        doc.setRight(BigInteger.ZERO);
+        doc.setTop(BigInteger.ZERO);
+        doc.setRefid("0");
+        ((ComposedBlockType) node.getUserObject()).getTextBlockOrImageBlockOrComposedBlock().add(doc);
+        }
+        
+        if (child.equals("composedblock")){
+        ComposedBlockType doc=new ComposedBlockType();
+        doc.setType(ImposedType.BODY);
+        ((ComposedBlockType) node.getUserObject()).getTextBlockOrImageBlockOrComposedBlock().add(doc);
+        }   
+        }
+        
+        
+        if (getName(node.getUserObject())=="imageblock"){
+        if (child.equals("polygon")){
+        PolygonType doc=new PolygonType();
+        ((ImageBlockType) node.getUserObject()).setPolygon(doc);
+        }
+        }
+        
+        if (getName(node.getUserObject())=="textblock"){
+        if (child.equals("textline")){
+        TextBlockType.TextLine doc=new TextBlockType.TextLine();
+        doc.setBottom(BigInteger.ZERO);
+        doc.setLeft(BigInteger.ZERO);
+        doc.setRight(BigInteger.ZERO);
+        doc.setTop(BigInteger.ZERO);
+        
+        ((TextBlockType) node.getUserObject()).getTextLine().add(doc);
+        }
+        }
+        
+        if (getName(node.getUserObject())=="textline"){
+        if (child.equals("string")){
+        String doc=new String();
+        ((TextBlockType.TextLine) node.getUserObject()).getString().add(doc);
+        }
+        }
+        
+        if (getName(node.getUserObject())=="polygon"){
+        if (child.equals("point")){
+        PointType doc=new PointType();
+        doc.setX(BigInteger.ZERO);
+        doc.setY(BigInteger.ZERO);
+        ((PolygonType) node.getUserObject()).getPoint().add(doc);
+        }
+        }  
+    }
+    
+     public static void deleteNode(DefaultMutableTreeNode node) {
+ 
+            if(getName(node.getUserObject()).equals("hierarchy")){
+                node.setUserObject(null);
+                return;
+            }
+            if(getName(node.getUserObject()).equals("hierarchydocs"))
+            {
+                /*HierarchyType parent=(HierarchyType)node.getParent();
+                parent.setHierarchyDocs(null);*/
+                return;
+            }
+            if(getName(node.getUserObject()).equals("hierarchyblocks"))
+            {
+                /*HierarchyType parent=(HierarchyType)node.getParent();
+                parent.setHierarchyBlocks(null);*/
+                return;
+            }
+ 
+            if(getName(node.getUserObject()).equals("document")){
+                HierarchyDocsType parent=(HierarchyDocsType)((DefaultMutableTreeNode)node.getParent()).getUserObject();
+                parent.getDocument().remove(node.getUserObject());         
+                return;
+            }
+ 
+            if((getName(node.getUserObject()).equals("imageblock"))||
+                    (getName(node.getUserObject()).equals("textblock"))||
+                        (getName(node.getUserObject()).equals("composedblock")))
+                    {
+                DefaultMutableTreeNode parent= (DefaultMutableTreeNode) node.getParent();
+                if(getName(parent.getUserObject()).equals("hierarchyblocks")){
+                   HierarchyBlocksType block= (HierarchyBlocksType)parent.getUserObject(); 
+                   block.getTextBlockOrImageBlockOrComposedBlock().remove(node.getUserObject());
+                   return;
+            }
+                 if(getName(parent.getUserObject()).equals("composedblock")){
+                   ComposedBlockType block= (ComposedBlockType)parent.getUserObject(); 
+                   block.getTextBlockOrImageBlockOrComposedBlock().remove(node.getUserObject());
+                   return;
+            }
+                 return;
+            }
+            if(getName(node.getUserObject()).equals("polygon")){
+                ImageBlockType parent=(ImageBlockType)((DefaultMutableTreeNode)node.getParent()).getUserObject();
+                parent.setPolygon(null);         
+                return;
+            }
+            if(getName(node.getUserObject()).equals("point")){
+                PolygonType parent=(PolygonType)((DefaultMutableTreeNode)node.getParent()).getUserObject();
+                parent.getPoint().remove(node.getUserObject());        
+                return;
+            }
+            if(getName(node.getUserObject()).equals("textline")){
+                TextBlockType parent=(TextBlockType)((DefaultMutableTreeNode)node.getParent()).getUserObject();
+                parent.getTextLine().remove(node.getUserObject());        
+                return;
+            }
+            if(getName(node.getUserObject()).equals("string")){
+                TextBlockType.TextLine parent=(TextBlockType.TextLine)((DefaultMutableTreeNode)node.getParent()).getUserObject();
+                parent.getString().remove(node.getUserObject());        
+                return;
+            }
+    }
+     
+     public static String getString( DefaultMutableTreeNode node){       
+        String strings= new String();
+       
+        TextBlockType.TextLine textline=(TextBlockType.TextLine) node.getUserObject();
+        List <String> s=textline.getString();
+        for (int i=0; i<s.size();i++)
+        {
+        strings+= s.get(i);
+        strings+=" ";
+        }
+        
+       
+        return strings;
+    }
+     public static void setString( DefaultMutableTreeNode node, String s)
+     {
+        String[] temp;
+        for (int i=0; i< ((TextBlockType.TextLine)node.getUserObject()).getString().size();i++){
+            ((TextBlockType.TextLine)node.getUserObject()).getString().remove(i);
+        }
+        String delimiter = " ";
+        temp = s.split(delimiter);
+        for(int i =0; i < temp.length ; i++){
+            ((TextBlockType.TextLine)node.getUserObject()).getString().add(temp[i]);
+        }
+      
+     
+     }
+    
     public static void init() {
                  try {
             JAXBContext jc = JAXBContext.newInstance ("generated");
@@ -396,102 +665,6 @@ public class Test4 {
            
            rootElement = element;
            
-          /* BigInteger a1 = BigInteger.valueOf(0);
-           BigInteger a2 = BigInteger.valueOf(1);
-           BigInteger a3 = BigInteger.valueOf(2);
-           BigInteger a4 = BigInteger.valueOf(3);
-           BigInteger a5 = BigInteger.valueOf(4);
-           BigInteger a6 = BigInteger.valueOf(5);
-           
-           BlockType bloc = new BlockType();
-           PointType p1 = new PointType();
-           PointType p2 = new PointType();
-           PointType p3 = new PointType();
-           
-           p1.setX(a1);
-           p2.setX(a2);
-           p3.setX(a3);
-           p1.setY(a4);
-           p2.setY(a5);
-           p3.setY(a6);
-           ArrayList<PointType> list=new ArrayList<PointType>() ;
-           list.add(p1);
-           list.add(p2);
-           list.add(p3);
-           
-           PolygonType poly = new PolygonType();
-           poly.setPoint(list);
-           
-           bloc.setPolygon(poly);
-           */
-           
-           //HierarchyType nodstart = (HierarchyType) element.getValue();
-           
-           //System.out.println(nodstart);
-           
-           /*ComposedBlockType imagine = (ComposedBlockType) nodstart.getHierarchyBlocks().getTextBlockOrImageBlockOrComposedBlock().get(0);
-           ImageBlockType blocimage= (ImageBlockType) imagine.getTextBlockOrImageBlockOrComposedBlock().get(0);
-           PolygonType poli=(PolygonType) blocimage.getPolygon();
-           ArrayList<PointType> list=new ArrayList<PointType>() ;
-           list=(ArrayList<PointType>) poli.getPoint();
-           
-           BigInteger tempx=list.get(0).getX();
-           BigInteger tempy=list.get(0).getY();
-           PointType punct_auxiliar= new PointType();
-           punct_auxiliar.setX(tempx);
-           punct_auxiliar.setY(tempy);
-           list.set(0,list.get(1));
-           list.set(1,punct_auxiliar);
-         
-           movePointDown(list,1);
-         
-           //System.out.println (imagine.getType());
-           for (int i=0; i<list.size(); i++) {
-               System.out.println(list.get(i).getX());
-               System.out.println(list.get(i).getY());
-           }
-          
-           //System.out.println (blocimage.getRight());
-           //System.out.println (blocimage.getBottom());*/
-           //System.out.println(((DocumentType)nodstart));
-          /* testPanel a = new testPanel();
-           
-           a.setVisible(true);
-           if(       "hierarchy".equals(element.getName().toString())){
-               HierarchyType n1 = (HierarchyType) element.getValue();
-               Object xx = n1.getHierarchyBlocks();
-               System.out.println(xx.getClass().toString() );
-               
-           }
-           DefaultMutableTreeNode x = transform(nodstart);
-           
-           a.jTree1.setModel(new DefaultTreeModel(x));        
-           JFrame frame = new JFrame();
-           frame.add(a);
-           frame.show();
-           frame.setSize(600, 400);
-           frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-           */
-           /*ComposedBlockType imagine = (ComposedBlockType) nodstart.getHierarchyBlocks().getTextBlockOrImageBlockOrComposedBlock().get(0);
-           ComposedBlockType bloc= (ComposedBlockType) imagine.getTextBlockOrImageBlockOrComposedBlock().get(2);
-           ArrayList<BlockType> l1=(ArrayList<BlockType>) bloc.getTextBlockOrImageBlockOrComposedBlock();
-          // moveTextBlockDown(l1,0);
-           
-           ImageBlockType textblock1= (ImageBlockType) bloc.getTextBlockOrImageBlockOrComposedBlock().get(0);
-           ImageBlockType textblock2= (ImageBlockType) bloc.getTextBlockOrImageBlockOrComposedBlock().get(1);
-           deleteNode(l1,textblock2);
-            BigInteger refid1=textblock1.left;
-           TextBlockType text= (TextBlockType) l1.get(1);
-           
-           System.out.println(refid1);
-           System.out.println(text.refid);
-           //ArrayList<TextBlockType.TextLine> l1=(ArrayList<TextBlockType.TextLine>) textblock.textLine;
-          // ArrayList<String> lista_stringuri =new ArrayList<String>() ;
-           //lista_stringuri= (ArrayList<String>) textblock.textLine.get(0).string;
-          
-  //         for (int i=0; i<bloc.getTextBlockOrImageBlockOrComposedBlock().size(); i++) 
-            //   System.out.println(.get(i).string.get(0));
-           */
            
        } catch (JAXBException e) {
            e.printStackTrace ();
